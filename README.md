@@ -1,5 +1,7 @@
 # homebridge-HTTP-IRBlaster Plugin
 
+[![NPM Downloads](https://img.shields.io/npm/dm/homebridge-dht.svg?style=flat)](https://npmjs.org/package/homebridge-http-irblaster)
+
 I wrote this plugin as a wrapper around mdhiggins ESP8266-HTTP-IR-Blaster to allow remote control of InfraRed controlled devices by HomeKit. To use this plugin, you need to build the ESP8266 based IR Blaster device documented by mdhiggins on the github for the blaster. Once you have it built, you can control it via HomeKit.
 
 # configuration
