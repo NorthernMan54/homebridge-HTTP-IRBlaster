@@ -1,10 +1,11 @@
 {
-  "name": "homebridge-HTTP-IRBlaster",
+  "name": "homebridge-http-irblaster",
   "version": "0.1.1",
-  "description": "Dummy switches for Homebridge: https://github.com/nfarina/homebridge",
+  "description": "ESP8266 based IR Blaster for HomeBridge: https://github.com/nfarina/homebridge",
   "license": "ISC",
   "keywords": [
-    "homebridge-plugin"
+    "homebridge-plugin",
+    "esp8266"
   ],
   "repository": {
     "type": "git",
