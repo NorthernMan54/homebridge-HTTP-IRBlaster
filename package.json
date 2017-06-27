@@ -1,20 +1,24 @@
 {
-  "name": "homebridge-dummy",
-  "version": "0.1.0",
-  "description": "Dummy switches for Homebridge: https://github.com/nfarina/homebridge",
-  "license": "ISC",
-  "keywords": [
-    "homebridge-plugin"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/nfarina/homebridge-dummy.git"
-  },
-  "bugs": {
-    "url": "http://github.com/nfarina/homebridge-dummy/issues"
-  },
-  "engines": {
-    "node": ">=0.12.0",
-    "homebridge": ">=0.2.0"
-  }
+    "name": "homebridge-HTTP-IRBlaster",
+    "version": "0.1.0",
+    "description": "Dummy switches for Homebridge: https://github.com/nfarina/homebridge",
+    "license": "ISC",
+    "keywords": [
+        "homebridge-plugin"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/NorthernMan54/homebridge-HTTP-IRBlaster.git"
+    },
+    "bugs": {
+        "url": "https://github.com/NorthernMan54/homebridge-HTTP-IRBlaster/issues"
+    },
+    "engines": {
+        "node": ">=0.12.0",
+        "homebridge": ">=0.2.0"
+    },
+    "dependencies": {
+        "request": "^2.65.0",
+        "debug": "^2.2.0"
+    }
 }

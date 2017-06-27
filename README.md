@@ -1,35 +1,64 @@
+# homebridge-HTTP-IRBlaster Plugin
 
-# "Dummy Switches" Plugin
+I wrote this plugin as a wrapper around mdhiggins ESP8266-HTTP-IR-Blaster to allow remote control of InfraRed controlled devices by HomeKit. To use this plugin, you need to build the ESP8266 based IR Blaster device documented by mdhiggins on the github for the blaster. Once you have it built, you can control it via HomeKit.
+
+# configuration
+
+The configuration is very straight forward, you need just a Button name and the URL to control the blaster.  
 
 Example config.json:
 
 ```
-    "accessories": [
-        {
-          "accessory": "DummySwitch",
-          "name": "My Switch 1"
-        }   
-    ]
-
+{
+      "accessory": "http-irblaster",
+      "name": "Power",
+      "url": "http://ESP_869815/msg?repeat=2&rdelay=100&pdelay=1&address=16388&code=538BC81:PANASONIC:48"
+        } ,
+{
+      "accessory": "http-irblaster",
+      "name": "Preset 1",
+      "url": "http://ESP_869815/msg?repeat=2&rdelay=100&pdelay=1&address=16388&code=5380835:PANASONIC:48"
+        } ,
+{
+      "accessory": "http-irblaster",
+      "name": "Preset 2",
+      "url": "http://ESP_869815/msg?repeat=2&rdelay=100&pdelay=1&address=16388&code=53888B5:PANASONIC:48"
+        },
+{
+      "accessory": "http-irblaster",
+      "name": "Tuner",
+      "url": "http://ESP_869815/msg?repeat=2&rdelay=100&pdelay=1&address=16388&code=5202500:PANASONIC:48"
+        } ,
+{
+      "accessory": "http-irblaster",
+      "name": "Muting",
+      "url": "http://ESP_869815/msg?repeat=2&rdelay=100&pdelay=1&address=16388&code=5004C49:PANASONIC:48"
+        } ,
+{
+      "accessory": "http-irblaster",
+      "name": "Vol +",
+      "url": "http://ESP_869815/msg?repeat=2&rdelay=100&pdelay=1&address=16388&code=5000401:PANASONIC:48"
+        } ,
+{
+      "accessory": "http-irblaster",
+      "name": "Vol -",
+      "url": "http://ESP_869815/msg?repeat=2&rdelay=100&pdelay=1&address=16388&code=5008481:PANASONIC:48"
+        } ,
+{
+      "accessory": "http-irblaster",
+      "name": "Music Port",
+      "url": "http://ESP_869815/msg?repeat=2&rdelay=100&pdelay=1&address=16388&code=500595C:PANASONIC:48"
+        }
 ```
 
-With this plugin, you can create any number of fake switches that will do nothing when turned on (and will automatically turn off right afterward, simulating a stateless switch). This can be very useful for advanced automation with HomeKit scenes.
+Please note, this URL is an example from my configuration controlling my Panasonic SA-PM53 mini system.  These will not work for you, unless you have the same stereo.
 
-For instance, the Philips Hue app will automatically create HomeKit scenes for you based on Hue Scenes you create. But what if you want to create a scene that contains both Philips Hue actions and other actions (like turning on the coffee maker with a WeMo outlet)? You are forced to either modify the Hue-created scene (which can be a HUGE list of actions if you have lots of lights) or build your own HomeKit lighting scenes.
+# Roadmap
 
-Instead, you can link scenes using these dummy switches. Let's say you have a Hue Scene called "Rise and Shine" that you want to activate in the morning. And you have also setup the system HomeKit scene "Good Morning" to turn on your coffee maker and disarm you security system. You can add a single dummy switch to your Good Morning scene, then create a Trigger based on the switching-on of the dummy switch that also activates Rise And Shine.
+1. Support for stateful Switches
+2. Convert to a platform plugin, to simplify the configuration.
 
-## Stateful Switches
+# Credits
 
-The default behavior of a dummy switch is to turn itself off one second after being turned on. However you may want to create a dummy switch that remains on and must be manually turned off. You can do this by passing an argument in your config.json:
-
-```
-    "accessories": [
-        {
-          "accessory": "DummySwitch",
-          "name": "My Stateful Switch 1",
-          "stateful": true
-        }   
-    ]
-
-```
+* mdhiggins - Creating the ESP8266 based IR Blaster, sharing your plans and source.
+* nfarina - For creating the dummy plugin which I used as base for this plugin.
