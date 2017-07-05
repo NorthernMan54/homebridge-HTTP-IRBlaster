@@ -31,7 +31,7 @@ IrBlaster.prototype._setOn = function(on, callback) {
 
     this.log("Setting "+this.name+" to "+on);
 
-    if (on) {
+
         this.httpRequest(this.url, function(error, response, responseBody) {
             if (error) {
                 this.log('IR Blast failed: %s', error.message);
@@ -41,7 +41,7 @@ IrBlaster.prototype._setOn = function(on, callback) {
                 //            callback();
             }
         }.bind(this));
-    }
+
 
     if (on && !this.stateful) {
         setTimeout(function() {
