@@ -1,6 +1,6 @@
 {
   "name": "homebridge-http-irblaster",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "ESP8266 based IR Blaster for HomeBridge: https://github.com/nfarina/homebridge",
   "license": "ISC",
   "keywords": [
