@@ -55,6 +55,10 @@ Example config.json:
 
 Please note, this URL is an example from my configuration controlling my Panasonic SA-PM53 mini system.  These will not work for you, unless you have the same stereo.
 
+# options
+
+* stateful - The default behavior this is to turn itself off one second after being turned on. However you may want to create a dummy switch that remains on and must be manually turned off.  ie "stateful": true
+
 # Roadmap
 
 1. Support for stateful Switches
