@@ -54,10 +54,54 @@ Example config.json:
       "accessory": "http-irblaster",
       "name": "Music Port",
       "url": "http://ESP_869815/msg?repeat=2&rdelay=100&pdelay=1&address=16388&code=500595C:PANASONIC:48"
-        }
+        },
+{
+      "accessory": "http-irblaster",
+      "name": "Fireplace",
+      "url": "http://192.168.1.175/json?simple=1",
+      "busy": 30,
+      "off_data": [{
+        "type": "raw",
+        "khz": 500,
+        "data": [200, 700, 700, 200, 700, 200, 700, 200, 200, 700, 700, 200, 200, 700, 200, 700, 200, 700, 700, 200, 200, 700, 700, 200, 700, 200, 700, 200, 200, 700, 200, 700, 200, 700, 700, 200, 700, 200, 200, 700, 700, 200, 700, 200, 700, 200],
+        "pulse": 10,
+        "pdelay": 30
+      }],
+      "on_data": [{
+        "type": "raw",
+        "data": [200, 700, 700, 200, 700, 200, 700, 200, 200, 700, 700, 200, 200, 700, 200, 700, 200, 700, 700, 200, 200, 700, 700, 200, 700, 200, 700, 200, 200, 700, 200, 700, 200, 700, 700, 200, 700, 200, 200, 700, 200, 700, 700, 200, 700, 200],
+        "khz": 500,
+        "pulse": 10,
+        "pdelay": 30
+      }]
+    },  {
+      "accessory": "http-irblaster",
+      "name": "Higher",
+      "url": "http://192.168.1.175/json?simple=1",
+      "busy": 1,
+      "data": [{
+        "type": "raw",
+        "data": [200, 700, 700, 200, 700, 200, 700, 200, 200, 700, 700, 200, 200, 700, 200, 700, 200, 700, 700, 200, 200, 700, 700, 200, 700, 200, 700, 200, 200, 700, 200, 700, 200, 700, 700, 200, 700, 200, 700, 200, 200, 700, 700, 200, 700, 200],
+        "khz": 500,
+        "pulse": 10,
+        "pdelay": 30
+      }]
+    }, {
+      "accessory": "http-irblaster",
+      "name": "Lower",
+      "busy": 1,
+      "url": "http://192.168.1.175/json?simple=1",
+      "data": [{
+        "type": "raw",
+        "data": [200, 700, 700, 200, 700, 200, 700, 200, 200, 700, 700, 200, 200, 700, 200, 700, 200, 700, 700, 200, 200, 700, 700, 200, 700, 200, 700, 200, 200, 700, 200, 700, 200, 700, 200, 700, 200, 700, 200, 700, 200, 700, 200, 700, 200, 700],
+        "khz": 500,
+        "pulse": 10,
+        "pdelay": 30
+      }]
+    }
 ```
 
-Please note, this URL is an example from my configuration controlling my Panasonic SA-PM53 mini system.  These will not work for you, unless you have the same stereo.
+Please note, this URL is an example from my configuration controlling my Panasonic SA-PM53 mini system.  These will not work for you, unless you have the same stereo. And the fireplace is one with a radio remote with this FCC ID Rtd-g6rh.  To control the fireplace, I just wired in a 315MHZ Transmitter module in place of the LED/Transistor.
 
 # options
 
