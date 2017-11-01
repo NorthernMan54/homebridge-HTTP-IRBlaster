@@ -19,10 +19,11 @@ function IrBlaster(log, config) {
   this.url = config.url;
   this.on_busy = config.busy || 1;
   this.up_busy = config.busy || 1;
+  this.rdelay = config.rdelay || 200;
   this.on_data = config.on_data;
   this.off_data = config.off_data;
-  this.up_data = config.off_data;
-  this.down_data = config.off_data;
+  this.up_data = config.up_data;
+  this.down_data = config.down_data;
   this.start = config.start;
   this.steps = config.steps;
 
@@ -74,14 +75,16 @@ IrBlaster.prototype._setSpeed = function(value, callback) {
   if (current == undefined)
     current = this.start;
 
-  var delta = Math.round((value - current) / (100 / this.steps));
+  var _value = Math.floor(value / (100 / this.steps));
+  var _current = Math.floor(current / (100 / this.steps));
+  var delta = Math.round(_value - _current);
 
   debug("Values", this.name, value, current, delta);
 
   if (delta < 0) {
     // Turn down device
     this.log("Turning down " + this.name + " by " + Math.abs(delta));
-    this.httpRequest(this.url, this.down_data, Math.abs(delta), this.up_busy, function(error, response, responseBody) {
+    this.httpRequest("down",this.url, this.down_data, Math.abs(delta), this.up_busy, function(error, response, responseBody) {
       if (error) {
         this.log('IR Blast failed: %s', error.message);
         callback(error);
@@ -94,7 +97,7 @@ IrBlaster.prototype._setSpeed = function(value, callback) {
 
     // Turn up device
     this.log("Turning up " + this.name + " by " + Math.abs(delta));
-    this.httpRequest(this.url, this.up_data, Math.abs(delta), this.up_busy, function(error, response, responseBody) {
+    this.httpRequest("up",this.url, this.up_data, Math.abs(delta), this.up_busy, function(error, response, responseBody) {
       if (error) {
         this.log('IR Blast failed: %s', error.message);
         callback(error);
@@ -105,7 +108,7 @@ IrBlaster.prototype._setSpeed = function(value, callback) {
     }.bind(this));
 
   } else {
-    this.log("Not controlling " + this.name,value, current, delta);
+    this.log("Not controlling " + this.name, value, current, delta);
     callback();
   }
 }
@@ -122,7 +125,7 @@ IrBlaster.prototype._setOn = function(on, callback) {
   }
 
   if (on) {
-    this.httpRequest(this.url, this.data, 1, this.on_busy, function(error, response, responseBody) {
+    this.httpRequest("toggle",this.url, this.data, 1, this.on_busy, function(error, response, responseBody) {
       if (error) {
         this.log('IR Blast failed: %s', error.message);
         callback(error);
@@ -145,17 +148,24 @@ IrBlaster.prototype._setState = function(on, callback) {
   debug("_setState", this.name, on, this._service.getCharacteristic(Characteristic.On).value);
 
   if (on && !this._service.getCharacteristic(Characteristic.On).value) {
-    this.httpRequest(this.url, this.on_data, 1, this.on_busy, function(error, response, responseBody) {
+    this.httpRequest("on",this.url, this.on_data, 1, this.on_busy, function(error, response, responseBody) {
       if (error) {
         this.log('IR Blast failed: %s', error.message);
         callback(error);
       } else {
         debug('IR Blast succeeded!', this.url);
+        var current = this._service.getCharacteristic(Characteristic.RotationSpeed)
+          .value;
+        if ( current != this.start )
+          {
+            debug("Setting level after turning on ",this.start);
+            this._service.getCharacteristic(Characteristic.RotationSpeed).updateValue(this.start);
+          }
         callback();
       }
     }.bind(this));
   } else if (!on && this._service.getCharacteristic(Characteristic.On).value) {
-    this.httpRequest(this.url, this.off_data, 1, this.on_busy, function(error, response, responseBody) {
+    this.httpRequest("off",this.url, this.off_data, 1, this.on_busy, function(error, response, responseBody) {
       if (error) {
         this.log('IR Blast failed: %s', error.message);
         callback(error);
@@ -170,11 +180,11 @@ IrBlaster.prototype._setState = function(on, callback) {
   }
 }
 
-IrBlaster.prototype.httpRequest = function(url, data, count, sleep, callback) {
+IrBlaster.prototype.httpRequest = function(name,url, data, count, sleep, callback) {
   //debug("url",url,"Data",data);
   // Content-Length is a workaround for a bug in both request and ESP8266WebServer - request uses lower case, and ESP8266WebServer only uses upper case
 
-  debug("HttpRequest", url, count, sleep, callback);
+  debug("HttpRequest", name, url, count, sleep, callback);
 
   if (!this.working) {
     this.working = true;
@@ -182,14 +192,14 @@ IrBlaster.prototype.httpRequest = function(url, data, count, sleep, callback) {
     if (data) {
 
       data[0].repeat = count;
-      data[0].rdelay = 100;
+      data[0].rdelay = this.rdelay;
 
       var body = JSON.stringify(data);
-      debug("Body",body);
+      //debug("Body", body);
       request({
           url: url,
           method: "POST",
-          timeout: 10000,
+          timeout: 1000,
           headers: {
             'Content-Type': 'application/json',
             'Content-Length': body.length
@@ -200,7 +210,7 @@ IrBlaster.prototype.httpRequest = function(url, data, count, sleep, callback) {
           if (response) {
             debug("Response", response.statusCode, response.statusMessage);
           } else {
-            debug("Error", url, count, sleep, callback,error);
+            debug("Error", name, url, count, sleep, callback, error);
           }
           this.working = false;
           if (callback) callback(error, response, body);
@@ -223,7 +233,7 @@ IrBlaster.prototype.httpRequest = function(url, data, count, sleep, callback) {
         })
     }
   } else {
-    debug("NODEMCU is busy");
+    debug("NODEMCU is busy",name);
     if (callback) callback();
   }
 }
