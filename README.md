@@ -101,11 +101,12 @@ Example config.json:
     }
 ```
 
-Please note, this URL is an example from my configuration controlling my Panasonic SA-PM53 mini system.  These will not work for you, unless you have the same stereo. And the fireplace is one with a radio remote with this FCC ID Rtd-g6rh.  To control the fireplace, I just wired in a 315MHZ Transmitter module in place of the LED/Transistor.
+Please note, this URL is an example from my configuration controlling my Panasonic SA-PM53 mini system.  These will not work for you, unless you have the same stereo. And the fireplace is one with a radio remote [https://valorfireplaces.com/features/remote-controls.php] with this FCC ID Rtd-g6rh.  To control the fireplace, I just wired in a 315MHZ Transmitter module in place of the LED/Transistor.
 
 # options
 
 * stateful - The default behavior this is to turn itself off one second after being turned on. However you may want to create a dummy switch that remains on and must be manually turned off.  ie "stateful": true
+* busy - How long should the switch stay on in HomeKit ( in seconds ),  defaults to 1 second.
 
 # Roadmap
 
