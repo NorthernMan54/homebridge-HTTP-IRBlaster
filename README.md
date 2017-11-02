@@ -107,6 +107,14 @@ Please note, this URL is an example from my configuration controlling my Panason
 
 * stateful - The default behavior this is to turn itself off one second after being turned on. However you may want to create a dummy switch that remains on and must be manually turned off.  ie "stateful": true
 * busy - How long should the switch stay on in HomeKit ( in seconds ),  defaults to 1 second.
+* name": "Fireplace",
+* "url": "http://192.168.1.175/json?simple=1",
+* "on_busy": 30000,
+* "off_busy": 1000,
+* "up_busy": 600,
+* "down_busy": 600,
+* start - When turned on, where does the volume start at
+* steps - How many steps for the volume
 
 # Roadmap
 
