@@ -15,13 +15,13 @@ module.exports = function(homebridge) {
 function IrBlaster(log, config) {
   this.log = log;
   this.name = config.name;
-  this.stateful = config.stateful;
+  this.stateful = config.stateful || false;
   this.url = config.url;
-  this.on_busy = config.on_busy || 1;
+  this.on_busy = config.on_busy || 5;
   this.off_busy = config.off_busy || 1;
   this.down_busy = config.down_busy || 1;
   this.up_busy = config.up_busy || 1;
-  this.rdelay = config.rdelay || 200;
+  this.rdelay = config.rdelay || 600;
   this.on_data = config.on_data;
   this.off_data = config.off_data;
   this.up_data = config.up_data;
@@ -129,7 +129,7 @@ IrBlaster.prototype._setOn = function(on, callback) {
   if (on && !this.stateful) {
     setTimeout(function() {
       this._service.setCharacteristic(Characteristic.On, 0);
-    }.bind(this), this.busy * 1000);
+    }.bind(this), this.on_busy * 1000);
   }
 
   if (on) {
