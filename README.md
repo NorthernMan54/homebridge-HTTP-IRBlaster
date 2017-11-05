@@ -6,6 +6,8 @@ I wrote this plugin as a wrapper around mdhiggins ESP8266-HTTP-IR-Blaster to all
 
 # Installation
 
+More detailed instructions are available here https://www.instructables.com/id/Control-Your-Fireplace-With-HomeKit-and-Alexa/
+
 1. sudo npm install -g homebridge-http-irblaster
 
 # configuration
