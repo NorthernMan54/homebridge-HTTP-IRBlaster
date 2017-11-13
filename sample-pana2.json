@@ -1,0 +1,57 @@
+{
+  "bridge": {
+    "name": "Maggie",
+    "username": "CC:22:3D:E3:DE:35",
+    "port": 51826,
+    "pin": "031-45-154",
+    "ssdp": 1900
+  },
+
+  "description": "HomeBridge HTTP Status Control",
+
+  "platforms": [{
+    "platform": "EcoPlug",
+    "name": "EcoPlug"
+  }],
+
+  "accessories": [{
+    "accessory": "http-irblaster",
+    "name": "Panasonic",
+    "url": "http://ESP_8695EC/json?simple=1",
+    "on_busy": 5000,
+    "off_busy": 5000,
+    "up_busy": 400,
+    "down_busy": 400,
+    "steps": 50,
+    "rdelay": 100,
+    "count": 1,
+    "off_data": [{
+      "type": "PANASONIC",
+      "out": 1,
+      "data": "538BC81",
+      "length": 48,
+      "address": 16388
+    }],
+    "on_data": [{
+      "type": "PANASONIC",
+      "out": 1,
+      "data": "538BC81",
+      "length": 48,
+      "address": 16388
+    }],
+    "up_data": [{
+      "type": "PANASONIC",
+      "out": 1,
+      "data": "5000401",
+      "length": 48,
+      "address": 16388
+    }],
+    "down_data": [{
+      "type": "PANASONIC",
+      "out": 1,
+      "data": "5008481",
+      "length": 48,
+      "address": 16388
+    }]
+  }]
+}

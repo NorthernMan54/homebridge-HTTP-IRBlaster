@@ -1,31 +1,31 @@
 echo Power toggle
-curl --connect-timeout 3 http://ESP_869815/msg?code=538BC81:PANASONIC:48\&repeat=2\&rdelay=100\&address=16388
+curl --connect-timeout 3 http://ESP_869815/msg?code=538BC81:PANASONIC:48\&pulse=2\&rdelay=100\&address=16388
 
 echo Power off
-curl --connect-timeout 3 http://ESP_869815/msg?code=500FCF9:PANASONIC:48\&repeat=2\&rdelay=100\&address=16388
+curl --connect-timeout 3 http://ESP_869815/msg?code=500FCF9:PANASONIC:48\&pulse=2\&rdelay=100\&address=16388
 
 echo Power on
-curl --connect-timeout 3 http://ESP_869815/msg?code=5007C79:PANASONIC:48\&repeat=2\&rdelay=100\&address=16388
+curl --connect-timeout 3 http://ESP_869815/msg?code=5007C79:PANASONIC:48\&pulse=2\&rdelay=100\&address=16388
 
 echo Preset 1
-curl --connect-timeout 3 http://ESP_869815/msg?code=5380835:PANASONIC:48\&repeat=2\&rdelay=100\&address=16388
+curl --connect-timeout 3 http://ESP_869815/msg?code=5380835:PANASONIC:48\&pulse=2\&rdelay=100\&address=16388
 
 echo Preset 2
-curl --connect-timeout 3 http://ESP_869815/msg?code=53888B5:PANASONIC:48\&repeat=2\&rdelay=100\&address=16388
+curl --connect-timeout 3 http://ESP_869815/msg?code=53888B5:PANASONIC:48\&pulse=2\&rdelay=100\&address=16388
 
 echo Select Tuner
-curl --connect-timeout 3 http://ESP_869815/msg?code=5202500:PANASONIC:48\&repeat=2\&rdelay=100\&address=16388
+curl --connect-timeout 3 http://ESP_869815/msg?code=5202500:PANASONIC:48\&pulse=2\&rdelay=100\&address=16388
 
 echo Muting
-curl --connect-timeout 3 http://ESP_869815/msg?code=5004C49:PANASONIC:48\&repeat=2\&rdelay=100\&address=16388
+curl --connect-timeout 3 http://ESP_869815/msg?code=5004C49:PANASONIC:48\&pulse=2\&rdelay=100\&address=16388
 
 echo Vol +
-curl --connect-timeout 3 http://ESP_869815/msg?code=5000401:PANASONIC:48\&repeat=2\&rdelay=100\&address=16388
+curl --connect-timeout 3 http://ESP_869815/msg?code=5000401:PANASONIC:48\&pulse=2\&rdelay=100\&address=16388
 
 echo Vol -
-curl --connect-timeout 3 http://ESP_869815/msg?code=5008481:PANASONIC:48\&repeat=2\&rdelay=100\&address=16388
+curl --connect-timeout 3 http://ESP_869815/msg?code=5008481:PANASONIC:48\&pulse=2\&rdelay=100\&address=16388
 
 echo Music Port
-curl --connect-timeout 3 http://ESP_869815/msg?code=500595C:PANASONIC:48\&repeat=2\&rdelay=100\&address=16388
+curl --connect-timeout 3 http://ESP_869815/msg?code=500595C:PANASONIC:48\&pulse=2\&rdelay=100\&address=16388
 
 
