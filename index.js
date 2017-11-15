@@ -67,7 +67,7 @@ function IrBlaster(log, config) {
       .on('set', this._setOn.bind(this));
   }
 
-  if (this.start == undefined)
+  if (this.start == undefined && this.on_data && this.up_data)
     this.resetDevice();
 
 }
