@@ -7,7 +7,7 @@
 	"ssdp": "1900"
 
     },
-    "description": "This is an example configuration file with one fake accessory and one fake platform. You can use this as a template for creating your own configuration file containing devices you actually own.",
+    "description": "",
     "accessories": [
 {
           "accessory": "http-irblaster",
@@ -48,7 +48,7 @@
           "accessory": "http-irblaster",
           "name": "Music Port",
 	  "url": "http://ESP_869815/msg?repeat=2&rdelay=100&pdelay=1&address=16388&code=500595C:PANASONIC:48"
-        } 
+        }
     ],
     "platforms": [
 ]

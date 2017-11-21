@@ -237,8 +237,10 @@ IrBlaster.prototype.httpRequest = function(name, url, data, count, sleep, callba
 
     if (data) {
 
-      data[0].repeat = count;
-      data[0].rdelay = this.rdelay;
+      for (var i = 0; i < data.length; i++) {
+        data[i].repeat = count;
+        data[i].rdelay = this.rdelay;
+      }
 
       var body = JSON.stringify(data);
       debug("Body", body);

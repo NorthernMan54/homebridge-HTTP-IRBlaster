@@ -7,12 +7,9 @@
     "ssdp": 1900
   },
 
-  "description": "HomeBridge HTTP Status Control",
+  "description": "Sample config to control a Panasonic SA-PM53",
 
-  "platforms": [{
-    "platform": "EcoPlug",
-    "name": "EcoPlug"
-  }],
+  "platforms": [],
 
   "accessories": [{
     "accessory": "http-irblaster",
