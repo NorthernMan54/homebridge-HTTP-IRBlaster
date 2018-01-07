@@ -142,7 +142,7 @@ IrBlaster.prototype._setOn = function(on, callback) {
     }.bind(this), this.on_busy * 1000);
   }
 
-  if (on) {
+//  if (on) {
     this.httpRequest("toggle", this.url, this.data, 1, this.on_busy, function(error, response, responseBody) {
       if (error) {
         this.log('IR Blast failed: %s', error.message);
@@ -152,9 +152,9 @@ IrBlaster.prototype._setOn = function(on, callback) {
         callback();
       }
     }.bind(this));
-  } else {
-    callback();
-  }
+//  } else {
+//    callback();
+//  }
 }
 
 // An actual on/off switch
