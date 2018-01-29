@@ -2,9 +2,11 @@
 
 [![NPM Downloads](https://img.shields.io/npm/dm/homebridge-http-irblaster.svg?style=flat)](https://npmjs.org/package/homebridge-http-irblaster)
 
+![img_1640](https://user-images.githubusercontent.com/19808920/33053270-aef3dbf2-ce40-11e7-8716-0caaa8c47051.PNG)
+
 I wrote this plugin as a wrapper around <https://github.com/mdhiggins/ESP8266-HTTP-IR-Blaster> to allow remote control of InfraRed controlled devices by HomeKit. To use this plugin, you need to build the ESP8266 based IR Blaster device documented by mdhiggins on the github for the blaster. Once you have it built, you can control it via HomeKit.
 
-![img_1611](https://user-images.githubusercontent.com/19808920/33053269-aee42054-ce40-11e7-9c74-7fee8e975782.JPG) ![img_1640](https://user-images.githubusercontent.com/19808920/33053270-aef3dbf2-ce40-11e7-8716-0caaa8c47051.PNG)
+![IRBlasterCircuit](https://user-images.githubusercontent.com/19808920/35492079-9aa49e48-0478-11e8-927c-4df2aab6fc9b.png)
 
 The plugin will create different types of accessories in HomeKit, depending on the configuration and features of the device.  For simple accessories, a switch is configured, allowing on and off control.  While for more advanced accessories a FAN is configured allowing on, off and a level to be set.  For the fireplace I connected, I use the level to control the flame height, and for the Panasonic stereo the volume.
 
