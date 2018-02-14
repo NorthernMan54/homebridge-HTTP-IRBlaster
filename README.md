@@ -10,6 +10,14 @@ I wrote this plugin as a wrapper around <https://github.com/mdhiggins/ESP8266-HT
 
 The plugin will create different types of accessories in HomeKit, depending on the configuration and features of the device.  For simple accessories, a switch is configured, allowing on and off control.  While for more advanced accessories a FAN is configured allowing on, off and a level to be set.  For the fireplace I connected, I use the level to control the flame height, and for the Panasonic stereo the volume.
 
+# Circuit Diagrams
+
+## RF and LED Transmitter
+
+![RF-LED](ESP%208266%20-%20RF%20and%20LED_bb.jpg)
+
+![DHT-YL](ESP%208266%20-%20RF%20and%20LED_schem.jpg)
+
 # Installation
 
 More detailed instructions are available here <https://www.instructables.com/id/Control-Your-Fireplace-With-HomeKit-and-Alexa/>
