@@ -190,7 +190,7 @@ IrBlaster.prototype._setState = function(on, callback) {
         callback();
       }
     }.bind(this));
-  } else {
+  } else if (!on) {
     this.httpRequest("off", this.url, this.off_data, 1, this.off_busy, function(error, response, responseBody) {
       if (error) {
         this.log('IR Blast failed: %s', error.message);
