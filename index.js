@@ -80,7 +80,7 @@ IrBlaster.prototype.getServices = function() {
   informationService
     .setCharacteristic(Characteristic.Manufacturer, "NorthernMan54")
     .setCharacteristic(Characteristic.Model, this.service)
-    .setCharacteristic(Characteristic.SerialNumber, hostname+"-"+this.name)
+    .setCharacteristic(Characteristic.SerialNumber, hostname + "-" + this.name)
     .setCharacteristic(Characteristic.FirmwareRevision, require('./package.json').version);
   return [this._service, informationService];
 }
@@ -151,19 +151,19 @@ IrBlaster.prototype._setOn = function(on, callback) {
     }.bind(this), this.on_busy * 1000);
   }
 
-//  if (on) {
-    this.httpRequest("toggle", this.url, this.data, 1, this.on_busy, function(error, response, responseBody) {
-      if (error) {
-        this.log('IR Blast failed: %s', error.message);
-        callback(error);
-      } else {
-        debug('IR Blast succeeded!', this.url);
-        callback();
-      }
-    }.bind(this));
-//  } else {
-//    callback();
-//  }
+  //  if (on) {
+  this.httpRequest("toggle", this.url, this.data, 1, this.on_busy, function(error, response, responseBody) {
+    if (error) {
+      this.log('IR Blast failed: %s', error.message);
+      callback(error);
+    } else {
+      debug('IR Blast succeeded!', this.url);
+      callback();
+    }
+  }.bind(this));
+  //  } else {
+  //    callback();
+  //  }
 }
 
 // An actual on/off switch
@@ -174,7 +174,7 @@ IrBlaster.prototype._setState = function(on, callback) {
 
   debug("_setState", this.name, on, this._service.getCharacteristic(Characteristic.On).value);
 
-  if (on) {
+  if (on && !this._service.getCharacteristic(Characteristic.On).value) {
     this.httpRequest("on", this.url, this.on_data, 1, this.on_busy, function(error, response, responseBody) {
       if (error) {
         this.log('IR Blast failed: %s', error.message);
@@ -190,7 +190,7 @@ IrBlaster.prototype._setState = function(on, callback) {
         callback();
       }
     }.bind(this));
-  } else if (!on) {
+  } else if (!on && this._service.getCharacteristic(Characteristic.On).value) {
     this.httpRequest("off", this.url, this.off_data, 1, this.off_busy, function(error, response, responseBody) {
       if (error) {
         this.log('IR Blast failed: %s', error.message);
