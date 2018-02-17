@@ -23,7 +23,7 @@ function IrBlaster(log, config) {
   this.off_busy = config.off_busy || 1;
   this.down_busy = config.down_busy || 1;
   this.up_busy = config.up_busy || 1;
-  this.rdelay = config.rdelay || 600;
+  this.rdelay = config.rdelay || 100;
   this.on_data = config.on_data;
   this.off_data = config.off_data;
   this.up_data = config.up_data;
