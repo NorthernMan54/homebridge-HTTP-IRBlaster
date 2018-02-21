@@ -14,9 +14,9 @@ The plugin will create different types of accessories in HomeKit, depending on t
 
 ## RF and LED Transmitter
 
-![RF-LED](ESP%208266%20-%20RF%20and%20LED_bb.jpg)
+![RF-LED](files/ESP%208266%20-%20RF%20and%20LED_bb.jpg)
 
-![DHT-YL](ESP%208266%20-%20RF%20and%20LED_schem.jpg)
+![DHT-YL](files/ESP%208266%20-%20RF%20and%20LED_schem.jpg)
 
 # Installation
 
