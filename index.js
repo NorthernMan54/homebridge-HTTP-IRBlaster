@@ -78,7 +78,7 @@ IrBlaster.prototype.getServices = function() {
   var informationService = new Service.AccessoryInformation();
 
   informationService
-    .setCharacteristic(Characteristic.Manufacturer, "NorthernMan54")
+    .setCharacteristic(Characteristic.Manufacturer, "HTTP-IRBlaster")
     .setCharacteristic(Characteristic.Model, this.service)
     .setCharacteristic(Characteristic.SerialNumber, hostname + "-" + this.name)
     .setCharacteristic(Characteristic.FirmwareRevision, require('./package.json').version);
