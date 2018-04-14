@@ -18,7 +18,13 @@ function IrBlaster(log, config) {
   this.log = log;
   this.name = config.name;
   this.stateful = config.stateful || false;
-  this.url = config.url;
+  this.irBlaster = config.irBlaster;
+  this.command = config.command || "/json?simple=1";
+  const dns = require('dns')
+  dns.lookup(this.irBlaster, function(err, result) {
+    this.url = "http://" + result + this.command;
+    debug("URL", this.url);
+  }.bind(this));
   this.on_busy = config.on_busy || 5;
   this.off_busy = config.off_busy || 1;
   this.down_busy = config.down_busy || 1;

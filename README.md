@@ -26,7 +26,7 @@ More detailed instructions are available here <https://www.instructables.com/id/
 
 # configuration
 
-The configuration is very straight forward, you need just a Button name and the URL to control the blaster.
+The configuration is very straight forward, you need just a Button name and the command to control the blaster.
 
 Example config.json containing the configuration for several of my devices, including my Panasonic SA-PM53 stereo, Fireplace and LG TV/Yamaha receiver.
 
@@ -34,11 +34,12 @@ Example config.json containing the configuration for several of my devices, incl
 {
   "accessory": "http-irblaster",
   "name": "Power",
-  "url": "http://ESP_869815/msg?repeat=2&rdelay=100&pdelay=1&address=16388&code=538BC81:PANASONIC:48"
+  "irBlaster": "ESP_869815",
+  "command": "/msg?repeat=2&rdelay=100&pdelay=1&address=16388&code=538BC81:PANASONIC:48"
 }, {
   "accessory": "http-irblaster",
   "name": "Panasonic",
-  "url": "http://ESP_8695EC/json?simple=1",
+  "irBlaster": "ESP_869815",
   "on_busy": 5000,
   "off_busy": 5000,
   "up_busy": 400,
@@ -77,7 +78,7 @@ Example config.json containing the configuration for several of my devices, incl
 }, {
   "accessory": "http-irblaster",
   "name": "Fireplace",
-  "url": "http://192.168.1.175/json?simple=1",
+  "irBlaster": "ESP_869815",
   "on_busy": 28000,
   "off_busy": 5000,
   "up_busy": 600,
@@ -120,7 +121,7 @@ Example config.json containing the configuration for several of my devices, incl
 }, {
   "accessory": "http-irblaster",
   "name": "TV",
-  "url": "http://ESP_08EE8D/json?simple=1",
+  "irBlaster": "ESP_869815",
   "on_busy": 1000,
   "off_busy": 1000,
   "off_data": [{
@@ -148,13 +149,14 @@ Example config.json containing the configuration for several of my devices, incl
 }
 ```
 
-Please note, this URL is an example from my configuration controlling my Panasonic SA-PM53 mini system. These will not work for you, unless you have the same stereo. And the fireplace is one with a radio remote [<https://valorfireplaces.com/features/remote-controls.php>] with this FCC ID Rtd-g6rh. To control the fireplace, I just wired in a 315MHZ Transmitter module in place of the LED/Transistor.
+Please note, this command is an example from my configuration controlling my Panasonic SA-PM53 mini system. These will not work for you, unless you have the same stereo. And the fireplace is one with a radio remote [<https://valorfireplaces.com/features/remote-controls.php>] with this FCC ID Rtd-g6rh. To control the fireplace, I just wired in a 315MHZ Transmitter module in place of the LED/Transistor.
 
 # Options - Simple devices that toggle
 
 - accessory - Must be "http-irblaster"
 - name - Name of the accessory in HomeKit
-- url - Full url to control the device ie "http://ESP_869815/msg?repeat=2&rdelay=100&pdelay=1&address=16388&code=538BC81:PANASONIC:48"
+- irBlaster - Name or ip address of your IRBlaster Device
+- command - Command to control the device ie "/msg?repeat=2&rdelay=100&pdelay=1&address=16388&code=538BC81:PANASONIC:48"
 - stateful - The default behavior of the plugin is to turn itself off one second after being turned on. However you may want to create a dummy switch that remains on and must be manually turned off. ie "stateful": true
 - busy - How long should the switch stay on in HomeKit ( in seconds ), defaults to 1 second.
 
@@ -162,7 +164,7 @@ Please note, this URL is an example from my configuration controlling my Panason
 
 - "accessory" - Must be "http-irblaster"
 - "name" - Name of the device
-- "url" - Initial URL of the device, including any options ie "<http://192.168.1.175/json?simple=1>" - See https://github.com/mdhiggins/ESP8266-HTTP-IR-Blaster for details
+- "irBlaster" - Name or ip address of your IRBlaster Device
 - "on_busy" - How long the device should be busy for when turning on, in milliseconds ie 30000
 - "off_busy" - How long the device should be busy for when turning off, in milliseconds ie 1000
 - "up_busy" - How long the device should be busy for when turning up, in milliseconds ie 600
