@@ -20,11 +20,6 @@ function IrBlaster(log, config) {
   this.stateful = config.stateful || false;
   this.irBlaster = config.irBlaster;
   this.command = config.command || "/json?simple=1";
-  const dns = require('dns')
-  dns.lookup(this.irBlaster, function(err, result) {
-    this.url = "http://" + result + this.command;
-    debug("URL", this.url);
-  }.bind(this));
   this.on_busy = config.on_busy || 5;
   this.off_busy = config.off_busy || 1;
   this.down_busy = config.down_busy || 1;
@@ -75,8 +70,13 @@ function IrBlaster(log, config) {
       .on('set', this._setOn.bind(this));
   }
 
-  if (this.start == undefined && this.on_data && this.up_data)
-    this.resetDevice();
+  const dns = require('dns')
+  dns.lookup(this.irBlaster, function(err, result) {
+    this.url = "http://" + result + this.command;
+    //debug("URL", this.url);
+    if (this.start == undefined && this.on_data && this.up_data)
+      this.resetDevice();
+  }.bind(this));
 
 }
 
