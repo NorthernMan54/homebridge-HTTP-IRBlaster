@@ -187,11 +187,14 @@ IrBlaster.prototype._setState = function(on, callback) {
         callback(error);
       } else {
         debug('IR Blast succeeded!', this.url);
-        var current = this._service.getCharacteristic(Characteristic.RotationSpeed)
-          .value;
-        if (current != this.start && this.start != undefined) {
-          debug("Setting level after turning on ", this.start);
-          this._service.getCharacteristic(Characteristic.RotationSpeed).updateValue(this.start);
+        if (this.up_data) {
+          // Only set Rotation speed if device supports volume
+          var current = this._service.getCharacteristic(Characteristic.RotationSpeed)
+            .value;
+          if (current != this.start && this.start != undefined) {
+            debug("Setting level after turning on ", this.start);
+            this._service.getCharacteristic(Characteristic.RotationSpeed).updateValue(this.start);
+          }
         }
         callback();
       }
