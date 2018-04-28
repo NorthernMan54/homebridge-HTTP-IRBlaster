@@ -180,7 +180,7 @@ IrBlaster.prototype._setState = function(on, callback) {
 
   debug("_setState", this.name, on, this._service.getCharacteristic(Characteristic.On).value);
 
-  if (on && !this._service.getCharacteristic(Characteristic.On).value) {
+  if (on && (this.on_data != this.off_data || !this._service.getCharacteristic(Characteristic.On).value)) {
     this.httpRequest("on", this.url, this.on_data, 1, this.on_busy, function(error, response, responseBody) {
       if (error) {
         this.log('IR Blast failed: %s', error.message);
@@ -199,7 +199,7 @@ IrBlaster.prototype._setState = function(on, callback) {
         callback();
       }
     }.bind(this));
-  } else if (!on && this._service.getCharacteristic(Characteristic.On).value) {
+  } else if (!on && (this.on_data != this.off_data || this._service.getCharacteristic(Characteristic.On).value)) {
     this.httpRequest("off", this.url, this.off_data, 1, this.off_busy, function(error, response, responseBody) {
       if (error) {
         this.log('IR Blast failed: %s', error.message);
