@@ -36,6 +36,9 @@ function IrBlaster(log, config) {
 
   this.working = Date.now();
 
+  if ( ! config.irBlaster)
+    this.log.error("ERROR: Missing required option irBlaster");
+
   if (this.on_data) {
 
     if (this.up_data) {
