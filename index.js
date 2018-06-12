@@ -74,7 +74,7 @@ function IrBlaster(log, config) {
   const dns = require('dns')
   dns.lookup(personality.irBlaster, function(err, result) {
     personality.url = "http://" + result + personality.command;
-    //debug("URL", personality.url);
+    debug("RESETDEVIVE", this.name, personality.start, personality.on_data, personality.up_data);
     if (personality.start == undefined && personality.on_data && personality.up_data)
       this.resetDevice();
   }.bind(this));
@@ -258,7 +258,7 @@ function httpRequest(name, url, data, count, sleep, callback) {
 
     for (var i = 0; i < data.length; i++) {
       data[i].repeat = count;
-      data[i].rdelay = personality.rdelay;   // Stubbed
+      data[i].rdelay = personality.rdelay; // Stubbed
     }
 
     var body = JSON.stringify(data);
