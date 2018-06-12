@@ -182,21 +182,21 @@ IrBlaster.prototype._setState = function(on, callback) {
   debug("_setState", this.name, on, this._service.getCharacteristic(Characteristic.On).value);
 
   if (on && (this.on_data[0].data != this.off_data[0].data || !this._service.getCharacteristic(Characteristic.On).value)) {
+    if (this.up_data) {
+      // Only set Rotation speed if device supports volume
+      var current = this._service.getCharacteristic(Characteristic.RotationSpeed)
+        .value;
+      if (current != this.start && this.start != undefined) {
+        debug("Setting level after turning on ", this.start);
+        this._service.getCharacteristic(Characteristic.RotationSpeed).updateValue(this.start);
+      }
+    }
     execQueue("on", this.url, this.on_data, 1, this.on_busy, this.rdelay, function(error, response, responseBody) {
       if (error) {
         this.log('IR Blast failed: %s', error.message);
         callback(error);
       } else {
         debug('IR Blast succeeded!', this.url);
-        if (this.up_data) {
-          // Only set Rotation speed if device supports volume
-          var current = this._service.getCharacteristic(Characteristic.RotationSpeed)
-            .value;
-          if (current != this.start && this.start != undefined) {
-            debug("Setting level after turning on ", this.start);
-            this._service.getCharacteristic(Characteristic.RotationSpeed).updateValue(this.start);
-          }
-        }
         callback();
       }
     }.bind(this));
