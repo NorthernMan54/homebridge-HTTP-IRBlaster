@@ -218,36 +218,19 @@ IrBlaster.prototype._setState = function(on, callback) {
 
 IrBlaster.prototype.resetDevice = function() {
   debug("Reseting volume on device", this.name);
-  execQueue("on", this.url, this.on_data, 1, this.on_busy, this.rdelay, function(error, response, responseBody) {
-
-    setTimeout(function() {
-      execQueue("down", this.url, this.down_data, this.steps, this.down_busy, this.rdelay, function(error, response, responseBody) {
-
-        setTimeout(function() {
-          execQueue("up", this.url, this.up_data, 2, this.up_busy, this.rdelay, function(error, response, responseBody) {
-
-            setTimeout(function() {
-              execQueue("off", this.url, this.off_data, 1, this.off_busy, this.rdelay, function(error, response, responseBody) {
-                this._service.getCharacteristic(Characteristic.RotationSpeed).updateValue(2);
-              }.bind(this));
-            }.bind(this), this.off_busy);
-
-          }.bind(this));
-
-        }.bind(this), this.steps * this.down_busy);
-      }.bind(this));
-
-    }.bind(this), this.on_busy);
+  execQueue("on", this.url, this.on_data, 1, this.on_busy, this.rdelay);
+  execQueue("down", this.url, this.down_data, this.steps, this.down_busy, this.rdelay);
+  execQueue("up", this.url, this.up_data, 2, this.up_busy, this.rdelay);
+  execQueue("off", this.url, this.off_data, 1, this.off_busy, this.rdelay, function(error, response, responseBody) {
+    this._service.getCharacteristic(Characteristic.RotationSpeed).updateValue(2);
   }.bind(this));
-
-
 }
 
 function httpRequest(name, url, data, count, sleep, rdelay, callback) {
   //debug("url",url,"Data",data);
   // Content-Length is a workaround for a bug in both request and ESP8266WebServer - request uses lower case, and ESP8266WebServer only uses upper case
   var cmdTime = Date.now() + sleep * count;
-  debug("HttpRequest", name, url, count, sleep);
+  debug("HttpRequest", name, url, count, sleep, rdelay);
 
   //debug("time",Date.now()," ",this.working);
 
@@ -331,7 +314,7 @@ function runQueue() {
     cmdQueue.isRunning = true;
     var args = cmdQueue.items.shift();
 
-    if (args.length > 1) {
+    if (args.length > 6) {
 
       // wrap callback with another function to toggle isRunning
       var callback = args[args.length - 1];
@@ -346,12 +329,15 @@ function runQueue() {
     } else {
 
       // add callback to toggle isRunning
-      args.push(function() {
+      args[args.length] = function() {
         cmdQueue.isRunning = false;
         runQueue();
-      });
+      };
+
+      args.length = args.length + 1;
 
     }
+
     httpRequest.apply(null, args);
 
   }
