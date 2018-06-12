@@ -333,11 +333,8 @@ function runQueue() {
         cmdQueue.isRunning = false;
         runQueue();
       };
-
       args.length = args.length + 1;
-
     }
-
     httpRequest.apply(null, args);
 
   }
