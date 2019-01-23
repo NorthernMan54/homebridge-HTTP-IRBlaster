@@ -14,7 +14,7 @@
   "accessories": [{
     "accessory": "http-irblaster",
     "name": "Panasonic",
-    "url": "http://ESP_8695EC/json?simple=1",
+    "irBlaster": "ESP_08EE8D",
     "on_busy": 5000,
     "off_busy": 5000,
     "up_busy": 400,

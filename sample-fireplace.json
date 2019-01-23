@@ -16,8 +16,8 @@
 {
       "accessory": "http-irblaster",
       "name": "Fireplace",
-      "url": "http://192.168.1.175/json?simple=1",
-      "on_busy": 28000,
+      "irBlaster": "ESP_08EE8D",
+      "on_busy": 32000,
       "off_busy": 5000,
       "up_busy": 600,
       "down_busy": 600,

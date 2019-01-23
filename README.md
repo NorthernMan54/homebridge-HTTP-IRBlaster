@@ -79,7 +79,7 @@ Example config.json containing the configuration for several of my devices, incl
   "accessory": "http-irblaster",
   "name": "Fireplace",
   "irBlaster": "ESP_869815",
-  "on_busy": 28000,
+  "on_busy": 32000,
   "off_busy": 5000,
   "up_busy": 600,
   "down_busy": 600,
