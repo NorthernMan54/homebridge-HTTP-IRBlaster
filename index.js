@@ -36,7 +36,7 @@ function IrBlaster(log, config) {
 
   this.working = Date.now();
 
-  if ( ! config.irBlaster)
+  if (!config.irBlaster)
     this.log.error("ERROR: Missing required option irBlaster");
 
   if (this.on_data) {
@@ -143,16 +143,13 @@ IrBlaster.prototype._setSpeed = function(value, callback) {
         callback();
       }
     }.bind(this));
-
   } else {
     this.log("Not controlling " + this.name, value, current, delta);
     callback();
   }
-}
-
+};
 
 IrBlaster.prototype._setOn = function(on, callback) {
-
   this.log("Setting " + this.name + " to " + on);
 
   if (on && !this.stateful) {
@@ -161,20 +158,20 @@ IrBlaster.prototype._setOn = function(on, callback) {
     }.bind(this), this.on_busy * 1000);
   }
 
-  //  if (on) {
-  execQueue("toggle", this.url, this.data, 1, this.on_busy, this.rdelay, function(error, response, responseBody) {
-    if (error) {
-      this.log('IR Blast failed: %s', error.message);
-      callback(error);
-    } else {
-      debug('IR Blast succeeded!', this.url);
-      callback();
-    }
-  }.bind(this));
-  //  } else {
-  //    callback();
-  //  }
-}
+  if ((on) || (!on && this.stateful)) {
+    execQueue("toggle", this.url, this.data, 1, this.on_busy, this.rdelay, function(error, response, responseBody) {
+      if (error) {
+        this.log('IR Blast failed: %s', error.message);
+        callback(error);
+      } else {
+        debug('IR Blast succeeded!', this.url);
+        callback();
+      }
+    }.bind(this));
+  } else {
+    callback();
+  }
+};
 
 // An actual on/off switch
 
