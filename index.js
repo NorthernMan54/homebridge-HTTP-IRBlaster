@@ -3,7 +3,6 @@
 var debug = require('debug')('IrBlaster');
 var request = require("request");
 var Service, Characteristic, cmdQueue;
-var personality = {};
 var os = require("os");
 var hostname = os.hostname();
 
@@ -13,7 +12,7 @@ module.exports = function(homebridge) {
   Characteristic = homebridge.hap.Characteristic;
 
   homebridge.registerAccessory("homebridge-http-irblaster", "http-irblaster", IrBlaster);
-}
+};
 
 function IrBlaster(log, config) {
   this.log = log;
@@ -36,11 +35,11 @@ function IrBlaster(log, config) {
 
   this.working = Date.now();
 
-  if (!config.irBlaster)
+  if (!config.irBlaster) {
     this.log.error("ERROR: Missing required option irBlaster");
+  }
 
   if (this.on_data) {
-
     if (this.up_data) {
       // On/Off and up/down type device
       //   this.addOptionalCharacteristic(Characteristic.RotationSpeed);
@@ -58,7 +57,6 @@ function IrBlaster(log, config) {
       if (this.start) {
         this._service.getCharacteristic(Characteristic.RotationSpeed).updateValue(this.start);
       }
-
     } else {
       // Statefull on/off
       debug("Adding Stateful switch", this.name);
@@ -74,14 +72,14 @@ function IrBlaster(log, config) {
       .on('set', this._setOn.bind(this));
   }
 
-  const dns = require('dns')
+  const dns = require('dns');
   dns.lookup(this.irBlaster, function(err, result) {
     this.url = "http://" + result + this.command;
-    //debug("RESETDEVIVE", this.name, this.start, this.on_data, this.up_data);
-    if (this.start == undefined && this.on_data && this.up_data)
+    // debug("RESETDEVIVE", this.name, this.start, this.on_data, this.up_data);
+    if (this.start === undefined && this.on_data && this.up_data) {
       this.resetDevice();
+    }
   }.bind(this));
-
 }
 
 IrBlaster.prototype.getServices = function() {
@@ -93,21 +91,21 @@ IrBlaster.prototype.getServices = function() {
     .setCharacteristic(Characteristic.SerialNumber, hostname + "-" + this.name)
     .setCharacteristic(Characteristic.FirmwareRevision, require('./package.json').version);
   return [this._service, informationService];
-}
+};
 
 IrBlaster.prototype._setSpeed = function(value, callback) {
-
-  //debug("Device", this._service);
+  // debug("Device", this._service);
 
   this.log("Setting " + this.name + " to " + value);
 
   var current = this._service.getCharacteristic(Characteristic.RotationSpeed)
     .value;
 
-  if (current == undefined)
+  if (current === undefined) {
     current = this.start;
+  }
 
-  if (value == 100 && current == 0) {
+  if (value === 100 && current === 0) {
     callback(null, current);
     return;
   }
@@ -131,7 +129,6 @@ IrBlaster.prototype._setSpeed = function(value, callback) {
       }
     }.bind(this));
   } else if (delta > 0) {
-
     // Turn up device
     this.log("Turning up " + this.name + " by " + Math.abs(delta));
     execQueue("up", this.url, this.up_data, Math.abs(delta) + this.count, this.up_busy, this.rdelay, function(error, response, responseBody) {
@@ -176,17 +173,16 @@ IrBlaster.prototype._setOn = function(on, callback) {
 // An actual on/off switch
 
 IrBlaster.prototype._setState = function(on, callback) {
-
   this.log("Turning " + this.name + " to " + on);
 
   debug("_setState", this.name, on, this._service.getCharacteristic(Characteristic.On).value);
 
-  if (on && (this.on_data[0].data != this.off_data[0].data || !this._service.getCharacteristic(Characteristic.On).value)) {
+  if (on && (this.on_data[0].data !== this.off_data[0].data || !this._service.getCharacteristic(Characteristic.On).value)) {
     if (this.up_data) {
       // Only set Rotation speed if device supports volume
       var current = this._service.getCharacteristic(Characteristic.RotationSpeed)
         .value;
-      if (current != this.start && this.start != undefined) {
+      if (current !== this.start && this.start !== undefined) {
         debug("Setting level after turning on ", this.start);
         this._service.getCharacteristic(Characteristic.RotationSpeed).updateValue(this.start);
       }
@@ -200,7 +196,7 @@ IrBlaster.prototype._setState = function(on, callback) {
         callback();
       }
     }.bind(this));
-  } else if (!on && (this.on_data[0].data != this.off_data[0].data || this._service.getCharacteristic(Characteristic.On).value)) {
+  } else if (!on && (this.on_data[0].data !== this.off_data[0].data || this._service.getCharacteristic(Characteristic.On).value)) {
     execQueue("off", this.url, this.off_data, 1, this.off_busy, this.rdelay, function(error, response, responseBody) {
       if (error) {
         this.log('IR Blast failed: %s', error.message);
@@ -214,7 +210,7 @@ IrBlaster.prototype._setState = function(on, callback) {
     debug("Do nothing");
     callback();
   }
-}
+};
 
 IrBlaster.prototype.resetDevice = function() {
   debug("Reseting volume on device", this.name);
@@ -224,21 +220,20 @@ IrBlaster.prototype.resetDevice = function() {
   execQueue("off", this.url, this.off_data, 1, this.off_busy, this.rdelay, function(error, response, responseBody) {
     this._service.getCharacteristic(Characteristic.RotationSpeed).updateValue(2);
   }.bind(this));
-}
+};
 
 function httpRequest(name, url, data, count, sleep, rdelay, callback) {
-  //debug("url",url,"Data",data);
+  // debug("url",url,"Data",data);
   // Content-Length is a workaround for a bug in both request and ESP8266WebServer - request uses lower case, and ESP8266WebServer only uses upper case
   var cmdTime = Date.now() + sleep * count;
   debug("HttpRequest", name, url, count, sleep, rdelay);
 
-  //debug("time",Date.now()," ",this.working);
+  // debug("time",Date.now()," ",this.working);
 
   //  if (Date.now() > this.working) {
   //    this.working = Date.now() + sleep * count;
 
   if (data) {
-
     for (var i = 0; i < data.length; i++) {
       data[i].repeat = count;
       data[i].rdelay = rdelay; // Stubbed
@@ -298,36 +293,27 @@ cmdQueue = {
 };
 
 function execQueue() {
-
   // push these args to the end of the queue
   cmdQueue.items.push(arguments);
 
   // run the queue
   runQueue();
-
 }
 
 function runQueue() {
-
   if (!cmdQueue.isRunning && cmdQueue.items.length > 0) {
-
     cmdQueue.isRunning = true;
     var args = cmdQueue.items.shift();
 
     if (args.length > 6) {
-
       // wrap callback with another function to toggle isRunning
       var callback = args[args.length - 1];
       args[args.length - 1] = function() {
-
         callback.apply(null, arguments);
         cmdQueue.isRunning = false;
         runQueue();
-
       };
-
     } else {
-
       // add callback to toggle isRunning
       args[args.length] = function() {
         cmdQueue.isRunning = false;
@@ -336,7 +322,5 @@ function runQueue() {
       args.length = args.length + 1;
     }
     httpRequest.apply(null, args);
-
   }
-
 }
