@@ -5,9 +5,9 @@ var request = require("request");
 var Service, Characteristic, cmdQueue;
 var os = require("os");
 var hostname = os.hostname();
+const dns = require('dns');
 
 module.exports = function(homebridge) {
-
   Service = homebridge.hap.Service;
   Characteristic = homebridge.hap.Characteristic;
 
@@ -72,14 +72,7 @@ function IrBlaster(log, config) {
       .on('set', this._setOn.bind(this));
   }
 
-  const dns = require('dns');
-  dns.lookup(this.irBlaster, function(err, result) {
-    this.url = "http://" + result + this.command;
-    // debug("RESETDEVIVE", this.name, this.start, this.on_data, this.up_data);
-    if (this.start === undefined && this.on_data && this.up_data) {
-      this.resetDevice();
-    }
-  }.bind(this));
+  findDevice.call(this);
 }
 
 IrBlaster.prototype.getServices = function() {
@@ -298,6 +291,25 @@ function execQueue() {
 
   // run the queue
   runQueue();
+}
+
+function findDevice() {
+  dns.lookup(this.irBlaster, function(err, result) {
+    if (err || result === undefined) {
+      // if failed, retry device discovery every minute
+      debug("WARNING: Dns lookup failed", err, result);
+      this.log("WARNING: DNS name resolution of %s failed, retrying in 1 minute", this.irBlaster);
+      setTimeout(function() {
+        findDevice.call(this);
+      }.bind(this), 60 * 1000);
+    } else {
+      this.url = "http://" + result + this.command;
+      // debug("RESETDEVIVE", this.name, this.start, this.on_data, this.up_data);
+      if (this.start === undefined && this.on_data && this.up_data) {
+        this.resetDevice();
+      }
+    }
+  }.bind(this));
 }
 
 function runQueue() {
