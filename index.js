@@ -112,7 +112,7 @@ IrBlaster.prototype._setSpeed = function(value, callback) {
   if (delta < 0) {
     // Turn down device
     this.log("Turning down " + this.name + " by " + Math.abs(delta));
-    execQueue("down", this.url, this.down_data, Math.abs(delta) + this.count, this.down_busy, this.rdelay, function(error, response, responseBody) {
+    execQueue.call(this, "down", this.url, this.down_data, Math.abs(delta) + this.count, this.down_busy, this.rdelay, function(error, response, responseBody) {
       if (error) {
         this.log('IR Blast failed: %s', error.message);
         callback(error);
@@ -124,7 +124,7 @@ IrBlaster.prototype._setSpeed = function(value, callback) {
   } else if (delta > 0) {
     // Turn up device
     this.log("Turning up " + this.name + " by " + Math.abs(delta));
-    execQueue("up", this.url, this.up_data, Math.abs(delta) + this.count, this.up_busy, this.rdelay, function(error, response, responseBody) {
+    execQueue.call(this, "up", this.url, this.up_data, Math.abs(delta) + this.count, this.up_busy, this.rdelay, function(error, response, responseBody) {
       if (error) {
         this.log('IR Blast failed: %s', error.message);
         callback(error);
@@ -149,7 +149,7 @@ IrBlaster.prototype._setOn = function(on, callback) {
   }
 
   if ((on) || (!on && this.stateful)) {
-    execQueue("toggle", this.url, this.data, 1, this.on_busy, this.rdelay, function(error, response, responseBody) {
+    execQueue.call(this, "toggle", this.url, this.data, 1, this.on_busy, this.rdelay, function(error, response, responseBody) {
       if (error) {
         this.log('IR Blast failed: %s', error.message);
         callback(error);
@@ -180,7 +180,7 @@ IrBlaster.prototype._setState = function(on, callback) {
         this._service.getCharacteristic(Characteristic.RotationSpeed).updateValue(this.start);
       }
     }
-    execQueue("on", this.url, this.on_data, 1, this.on_busy, this.rdelay, function(error, response, responseBody) {
+    execQueue.call(this, "on", this.url, this.on_data, 1, this.on_busy, this.rdelay, function(error, response, responseBody) {
       if (error) {
         this.log('IR Blast failed: %s', error.message);
         callback(error);
@@ -190,7 +190,7 @@ IrBlaster.prototype._setState = function(on, callback) {
       }
     }.bind(this));
   } else if (!on && (this.on_data[0].data !== this.off_data[0].data || this._service.getCharacteristic(Characteristic.On).value)) {
-    execQueue("off", this.url, this.off_data, 1, this.off_busy, this.rdelay, function(error, response, responseBody) {
+    execQueue.call(this, "off", this.url, this.off_data, 1, this.off_busy, this.rdelay, function(error, response, responseBody) {
       if (error) {
         this.log('IR Blast failed: %s', error.message);
         callback(error);
@@ -207,10 +207,10 @@ IrBlaster.prototype._setState = function(on, callback) {
 
 IrBlaster.prototype.resetDevice = function() {
   debug("Reseting volume on device", this.name);
-  execQueue("on", this.url, this.on_data, 1, this.on_busy, this.rdelay);
-  execQueue("down", this.url, this.down_data, this.steps, this.down_busy, this.rdelay);
-  execQueue("up", this.url, this.up_data, 2, this.up_busy, this.rdelay);
-  execQueue("off", this.url, this.off_data, 1, this.off_busy, this.rdelay, function(error, response, responseBody) {
+  execQueue.call(this, "on", this.url, this.on_data, 1, this.on_busy, this.rdelay);
+  execQueue.call(this, "down", this.url, this.down_data, this.steps, this.down_busy, this.rdelay);
+  execQueue.call(this, "up", this.url, this.up_data, 2, this.up_busy, this.rdelay);
+  execQueue.call(this, "off", this.url, this.off_data, 1, this.off_busy, this.rdelay, function(error, response, responseBody) {
     this._service.getCharacteristic(Characteristic.RotationSpeed).updateValue(2);
   }.bind(this));
 };
@@ -292,7 +292,7 @@ cmdQueue = {
 
 function execQueue() {
   // push these args to the end of the queue
-  cmdQueue.items.push(arguments);
+  cmdQueue.items.push([this, arguments]);
 
   // run the queue
   runQueue();
@@ -320,7 +320,9 @@ function findDevice() {
 function runQueue() {
   if (!cmdQueue.isRunning && cmdQueue.items.length > 0) {
     cmdQueue.isRunning = true;
-    var args = cmdQueue.items.shift();
+    var cmds = cmdQueue.items.shift();
+    var that = cmds[0];
+    var args = cmds[1];
 
     if (args.length > 6) {
       // wrap callback with another function to toggle isRunning
@@ -338,6 +340,6 @@ function runQueue() {
       };
       args.length = args.length + 1;
     }
-    httpRequest.apply(null, args);
+    httpRequest.apply(that, args);
   }
 }
