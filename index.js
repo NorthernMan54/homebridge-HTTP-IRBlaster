@@ -249,6 +249,8 @@ function httpRequest(name, url, data, count, sleep, rdelay, callback) {
             debug("Response", response.statusCode, response.statusMessage);
           } else {
             debug("Error", name, url, count, sleep, callback, error);
+            this.url = null;
+            findDevice.call(this);
           }
 
           setTimeout(function() {
@@ -267,6 +269,8 @@ function httpRequest(name, url, data, count, sleep, rdelay, callback) {
             debug("Response", response.statusCode, response.statusMessage);
           } else {
             debug("Error", error);
+            this.url = null;
+            findDevice.call(this);
           }
 
           setTimeout(function() {
