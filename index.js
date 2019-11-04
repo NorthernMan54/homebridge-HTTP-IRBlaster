@@ -225,54 +225,59 @@ function httpRequest(name, url, data, count, sleep, rdelay, callback) {
 
   //  if (Date.now() > this.working) {
   //    this.working = Date.now() + sleep * count;
+  if (this.url) {
+    if (data) {
+      for (var i = 0; i < data.length; i++) {
+        data[i].repeat = count;
+        data[i].rdelay = rdelay; // Stubbed
+      }
 
-  if (data) {
-    for (var i = 0; i < data.length; i++) {
-      data[i].repeat = count;
-      data[i].rdelay = rdelay; // Stubbed
-    }
-
-    var body = JSON.stringify(data);
-    debug("Body", body);
-    request({
-        url: url,
-        method: "POST",
-        timeout: 5000,
-        headers: {
-          'Content-Type': 'application/json',
-          'Content-Length': body.length
+      var body = JSON.stringify(data);
+      debug("Body", body);
+      request({
+          url: url,
+          method: "POST",
+          timeout: 5000,
+          headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': body.length
+          },
+          body: body
         },
-        body: body
-      },
-      function(error, response, body) {
-        if (response) {
-          debug("Response", response.statusCode, response.statusMessage);
-        } else {
-          debug("Error", name, url, count, sleep, callback, error);
-        }
+        function(error, response, body) {
+          if (response) {
+            debug("Response", response.statusCode, response.statusMessage);
+          } else {
+            debug("Error", name, url, count, sleep, callback, error);
+          }
 
-        setTimeout(function() {
-          if (callback) callback(error, response, body);
-        }, cmdTime - Date.now());
-      }.bind(this));
+          setTimeout(function() {
+            if (callback) callback(error, response, body);
+          }, cmdTime - Date.now());
+        }.bind(this));
+    } else {
+      // Simple URL Format
+      request({
+          url: url,
+          method: "GET",
+          timeout: 500
+        },
+        function(error, response, body) {
+          if (response) {
+            debug("Response", response.statusCode, response.statusMessage);
+          } else {
+            debug("Error", error);
+          }
+
+          setTimeout(function() {
+            if (callback) callback(error, response, body);
+          }, cmdTime - Date.now());
+        })
+    }
   } else {
-    // Simple URL Format
-    request({
-        url: url,
-        method: "GET",
-        timeout: 500
-      },
-      function(error, response, body) {
-        if (response) {
-          debug("Response", response.statusCode, response.statusMessage);
-        } else {
-          debug("Error", error);
-        }
-
-        setTimeout(function() {
-          if (callback) callback(error, response, body);
-        }, cmdTime - Date.now());
-      })
+    debug("Error", name, url, count, sleep, callback, error);
+    this.url = null;
+    findDevice.call(this);
   }
   //  } else {
   //    debug("NODEMCU is busy", name);
@@ -304,7 +309,7 @@ function findDevice() {
       }.bind(this), 60 * 1000);
     } else {
       this.url = "http://" + result + this.command;
-      // debug("RESETDEVIVE", this.name, this.start, this.on_data, this.up_data);
+      debug("URL", this.name, this.url);
       if (this.start === undefined && this.on_data && this.up_data) {
         this.resetDevice();
       }
