@@ -21,9 +21,9 @@ function IrBlaster(log, config) {
   this.irBlaster = config.irBlaster;
   this.command = config.command || "/json?simple=1";
   this.on_busy = config.on_busy || 5;
-  this.off_busy = config.off_busy || 1;
-  this.down_busy = config.down_busy || 1;
-  this.up_busy = config.up_busy || 1;
+  this.off_busy = config.off_busy || 5;
+  this.down_busy = config.down_busy || 2;
+  this.up_busy = config.up_busy || 2;
   this.rdelay = config.rdelay || 200;
   this.on_data = config.on_data;
   this.off_data = config.off_data;
@@ -237,7 +237,7 @@ function httpRequest(name, url, data, count, sleep, rdelay, callback) {
       request({
           url: url,
           method: "POST",
-          timeout: 5000,
+          timeout: 10000,
           headers: {
             'Content-Type': 'application/json',
             'Content-Length': body.length
@@ -262,7 +262,7 @@ function httpRequest(name, url, data, count, sleep, rdelay, callback) {
       request({
           url: url,
           method: "GET",
-          timeout: 500
+          timeout: 10000
         },
         function(error, response, body) {
           if (response) {
@@ -279,9 +279,7 @@ function httpRequest(name, url, data, count, sleep, rdelay, callback) {
         })
     }
   } else {
-    debug("Error", name, url, count, sleep, callback, error);
-    this.url = null;
-    findDevice.call(this);
+    callback(new Error("Unknown host " + this.name), "", "");
   }
   //  } else {
   //    debug("NODEMCU is busy", name);
