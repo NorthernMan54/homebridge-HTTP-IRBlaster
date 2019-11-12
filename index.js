@@ -225,6 +225,7 @@ function httpRequest(name, url, data, count, sleep, rdelay, callback) {
 
   //  if (Date.now() > this.working) {
   //    this.working = Date.now() + sleep * count;
+  var that = this;
   if (this.url) {
     if (data) {
       for (var i = 0; i < data.length; i++) {
@@ -249,8 +250,8 @@ function httpRequest(name, url, data, count, sleep, rdelay, callback) {
             debug("Response", response.statusCode, response.statusMessage);
           } else {
             debug("Error", name, url, count, sleep, callback, error);
-            this.url = null;
-            findDevice.call(this);
+            that.url = null;
+            findDevice.call(that);
           }
 
           setTimeout(function() {
@@ -279,7 +280,7 @@ function httpRequest(name, url, data, count, sleep, rdelay, callback) {
         })
     }
   } else {
-    callback(new Error("Unknown host " + this.name), "", "");
+    callback(new Error("Unknown host " + this.irBlaster), "", "");
   }
   //  } else {
   //    debug("NODEMCU is busy", name);
@@ -301,6 +302,7 @@ function execQueue() {
 }
 
 function findDevice() {
+  debug("findDevice(%s)", this.irBlaster);
   dns.lookup(this.irBlaster, function(err, result) {
     if (err || result === undefined) {
       // if failed, retry device discovery every minute
@@ -310,8 +312,8 @@ function findDevice() {
         findDevice.call(this);
       }.bind(this), 60 * 1000);
     } else {
-      this.url = "http://" + result + this.command;
-      debug("URL", this.name, this.url);
+      this.url = "http://" + result + "/json?simple=1";
+      debug("findDevice(%s) ==> %s", this.irBlaster, this.url);
       if (this.start === undefined && this.on_data && this.up_data) {
         this.resetDevice();
       }
