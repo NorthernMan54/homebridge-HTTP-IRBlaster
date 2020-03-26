@@ -20,7 +20,7 @@ function IrBlaster(log, config) {
   this.stateful = config.stateful || false;
   this.irBlaster = config.irBlaster;
   this.command = config.command || "/json?simple=1";
-  this.on_busy = config.on_busy || 5;
+  this.on_busy = config.on_busy || 5000;
   this.off_busy = config.off_busy || 5;
   this.down_busy = config.down_busy || 2;
   this.up_busy = config.up_busy || 2;
@@ -145,7 +145,7 @@ IrBlaster.prototype._setOn = function(on, callback) {
   if (on && !this.stateful) {
     setTimeout(function() {
       this._service.setCharacteristic(Characteristic.On, 0);
-    }.bind(this), this.on_busy * 1000);
+    }.bind(this), this.on_busy);
   }
 
   if ((on) || (!on && this.stateful)) {
@@ -312,8 +312,12 @@ function findDevice() {
         findDevice.call(this);
       }.bind(this), 60 * 1000);
     } else {
-      this.url = "http://" + result + "/json?simple=1";
-      debug("findDevice(%s) ==> %s", this.irBlaster, this.url);
+      if (this.command) {
+        this.url = "http://" + result + this.command;
+      } else {
+        this.url = "http://" + result + "/json?simple=1";
+        debug("findDevice(%s) ==> %s", this.irBlaster, this.url);
+      }
       if (this.start === undefined && this.on_data && this.up_data) {
         this.resetDevice();
       }
