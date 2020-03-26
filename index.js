@@ -20,7 +20,8 @@ function IrBlaster(log, config) {
   this.stateful = config.stateful || false;
   this.irBlaster = config.irBlaster;
   this.command = config.command || "/json?simple=1";
-  this.on_busy = config.on_busy || 5000;
+  this.on_busy = config.on_busy || 5;
+  this.busy = config.busy || 5;
   this.off_busy = config.off_busy || 5;
   this.down_busy = config.down_busy || 2;
   this.up_busy = config.up_busy || 2;
@@ -145,7 +146,7 @@ IrBlaster.prototype._setOn = function(on, callback) {
   if (on && !this.stateful) {
     setTimeout(function() {
       this._service.setCharacteristic(Characteristic.On, 0);
-    }.bind(this), this.on_busy);
+    }.bind(this), this.busy * 1000);
   }
 
   if ((on) || (!on && this.stateful)) {
