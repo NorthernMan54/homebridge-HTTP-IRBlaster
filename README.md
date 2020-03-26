@@ -158,7 +158,7 @@ Please note, this command is an example from my configuration controlling my Pan
 - irBlaster - Name or ip address of your IRBlaster Device
 - command - Command to control the device ie "/msg?repeat=2&rdelay=100&pdelay=1&address=16388&code=538BC81:PANASONIC:48"
 - stateful - The default behavior of the plugin is to turn itself off one second after being turned on. However you may want to create a dummy switch that remains on and must be manually turned off. ie "stateful": true
-- busy - How long should the switch stay on in HomeKit ( in milli seconds ), defaults to 5 seconds.
+- busy - How long should the switch stay on in HomeKit ( in seconds ), defaults to 5 seconds.
 
 `Example LG TV Buttons`
 
