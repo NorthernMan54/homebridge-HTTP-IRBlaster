@@ -4,7 +4,6 @@
   "description": "ESP8266 based IR Blaster for HomeBridge: https://github.com/nfarina/homebridge",
   "license": "ISC",
   "keywords": [
-    "homebridge-plugin",
     "esp8266"
   ],
   "scripts": {
@@ -31,10 +30,8 @@
     "nodemon": "^3.1.7"
   },
   "nodemonConfig": {
-    "watch": [
-      "src"
-    ],
-    "ext": "ts",
+    "watch": [],
+    "ext": "js",
     "ignore": [],
     "exec": "~/npm/bin/homebridge -U ./test/hbConfig -T -D -P .",
     "signal": "SIGTERM",
