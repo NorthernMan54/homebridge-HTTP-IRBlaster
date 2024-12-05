@@ -1,25 +1,42 @@
 {
   "name": "homebridge-http-irblaster",
-  "version": "0.1.39",
+  "version": "0.2.0",
   "description": "ESP8266 based IR Blaster for HomeBridge: https://github.com/nfarina/homebridge",
   "license": "ISC",
   "keywords": [
-    "homebridge-plugin",
     "esp8266"
   ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "nodemon"
+  },
   "repository": {
     "type": "git",
-    "url": "git://github.com/NorthernMan54/homebridge-HTTP-IRBlaster.git"
+    "url": "https://github.com/NorthernMan54/homebridge-HTTP-IRBlaster"
   },
   "bugs": {
     "url": "https://github.com/NorthernMan54/homebridge-HTTP-IRBlaster/issues"
   },
   "engines": {
-    "node": ">=0.12.0",
-    "homebridge": ">=0.2.0"
+    "homebridge": "^1.6.0 || ^2.0.0-beta.0",
+    "node": "^18.20.4 || ^20.15.1 || ^22.0.0"
   },
   "dependencies": {
-    "debug": "^2.2.0",
-    "request": "^2.88.0"
+    "debug": "^2.6.9",
+    "request": "^2.88.0",
+    "semver": "^7.6.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  },
+  "nodemonConfig": {
+    "watch": [],
+    "ext": "js",
+    "ignore": [],
+    "exec": "~/npm/bin/homebridge -U ./test/hbConfig -T -D -P .",
+    "signal": "SIGTERM",
+    "env": {
+      "NODE_OPTIONS": "--trace-warnings"
+    }
   }
 }
