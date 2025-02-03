@@ -4,6 +4,7 @@
   "description": "ESP8266 based IR Blaster for HomeBridge: https://github.com/nfarina/homebridge",
   "license": "ISC",
   "keywords": [
+    "homebridge-plugin",
     "esp8266"
   ],
   "scripts": {
